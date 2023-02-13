@@ -21,6 +21,11 @@ final class AuthViewController: UIViewController {
         yourPage.nameLogin = "Welcome, \(loginText)"
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+    
 
     @IBAction func loginButtonTapped() {
         guard let loginText = loginTF.text, let passwordText = passwordTF.text,
