@@ -13,7 +13,7 @@
 		EF11275F2999FAB800634E75 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF11275D2999FAB800634E75 /* Main.storyboard */; };
 		EF1127612999FAB900634E75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF1127602999FAB900634E75 /* Assets.xcassets */; };
 		EF1127642999FAB900634E75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF1127622999FAB900634E75 /* LaunchScreen.storyboard */; };
-		EF11276F2999FBAD00634E75 /* YourPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF11276E2999FBAD00634E75 /* YourPageViewController.swift */; };
+		EF11276F2999FBAD00634E75 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF11276E2999FBAD00634E75 /* PageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +25,7 @@
 		EF1127602999FAB900634E75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EF1127632999FAB900634E75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EF1127652999FAB900634E75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EF11276E2999FBAD00634E75 /* YourPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourPageViewController.swift; sourceTree = "<group>"; };
+		EF11276E2999FBAD00634E75 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				EF11275B2999FAB800634E75 /* AuthViewController.swift */,
-				EF11276E2999FBAD00634E75 /* YourPageViewController.swift */,
+				EF11276E2999FBAD00634E75 /* PageViewController.swift */,
 				EF11275D2999FAB800634E75 /* Main.storyboard */,
 			);
 			path = Controllers;
@@ -167,7 +167,7 @@
 			files = (
 				EF11275C2999FAB800634E75 /* AuthViewController.swift in Sources */,
 				EF1127582999FAB800634E75 /* AppDelegate.swift in Sources */,
-				EF11276F2999FBAD00634E75 /* YourPageViewController.swift in Sources */,
+				EF11276F2999FBAD00634E75 /* PageViewController.swift in Sources */,
 				EF11275A2999FAB800634E75 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

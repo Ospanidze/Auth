@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class YourPageViewController: UIViewController {
+final class PageViewController: UIViewController {
     
     @IBOutlet var nameLabel: UILabel!
     
@@ -15,10 +15,6 @@ final class YourPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        nameLabel.text = nameLogin
-    }
-    
-    @IBAction func logOutButtonTapped() {
-        dismiss(animated: true)
+        nameLabel.text = "Welcome, \(nameLogin ?? "Guest")"
     }
 }

@@ -14,8 +14,18 @@ final class AuthViewController: UIViewController {
     @IBOutlet var loginTF: UITextField!
     @IBOutlet var passwordTF: UITextField!
     
+    
+    @IBOutlet var loginButton: UIButton!
+    
+    let login = "Jinx"
+    let password = "123"
+    
+    // MARK: Override Fanction
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loginButton.layer.cornerRadius = 10
         
         NotificationCenter.default.addObserver(
             self,
@@ -32,18 +42,20 @@ final class AuthViewController: UIViewController {
         )
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil)
-        
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let yourPage = segue.destination as? PageViewController else {
+            return
+        }
+        guard let loginText = loginTF.text, !loginText.isEmpty else { return }
+        yourPage.nameLogin = loginText
+    }
+    
+   // MARK: Private Functions
     
     @objc private func keyboardWillShow(notifaction: NSNotification) {
         guard let keyboardFrame = notifaction.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
@@ -59,64 +71,44 @@ final class AuthViewController: UIViewController {
         self.view.frame.origin.y = 0
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let yourPage = segue.destination as? YourPageViewController else {
-            return
-        }
-        guard let loginText = loginTF.text, !loginText.isEmpty else { return }
-        yourPage.nameLogin = "Welcome, \(loginText)"
-    }
+    // MARK: IBActions
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        view.endEditing(true)
-    }
-    
-
     @IBAction func loginButtonTapped() {
-        guard let loginText = loginTF.text, let passwordText = passwordTF.text,
-              !loginText.isEmpty, !passwordText.isEmpty else {
-            showAlert(
-                title: "Login or password is empty",
-                message: "Please enter your login or password")
-            return
-        }
-        
-        guard passwordText == "123", loginText == "Jinx" else {
-            showAlert(
-                title: "Invalid login or password",
-                message: "Please enter correct login and password"
-            )
-            return
+        guard loginTF.text != login || passwordTF.text != password else { return }
+        showAlert(
+            title: "Invalid login or password",
+            message: "Please, enter correct login or password"
+        ) { _ in
+            self.passwordTF.text = ""
         }
         
     }
     
     @IBAction func userButtonTapped() {
-        showAlert(title: nil, message: "your login is Jinx 🙂")
+        showAlert(title: nil, message: "your login is \(login) 🙂")
     }
     
     @IBAction func passwordButtonTapped() {
-        showAlert(title: nil, message: "your password is 123 🙂")
+        showAlert(title: nil, message: "your password is \(password) 🙂")
     }
     
     @IBAction func unwind(for segue: UIStoryboardSegue) {
-        
+        guard segue.source is PageViewController else { return }
         loginTF.text = ""
         passwordTF.text = ""
     }
 }
 
+// MARK: Extension
+
 extension AuthViewController {
     
-    func showAlert(title: String?, message: String) {
+    private func showAlert(title: String?, message: String, closure: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "ok", style: .default) { _ in
-            self.passwordTF.text = ""
-        }
-        alert.addAction(okAction)
+        let okAction = UIAlertAction(title: "ok", style: .default, handler: closure)
         
+        alert.addAction(okAction)
         present(alert, animated: true)
     }
 }
