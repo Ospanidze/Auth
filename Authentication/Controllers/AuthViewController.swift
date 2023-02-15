@@ -24,6 +24,8 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loginTF.text = login
+        passwordTF.text = password
         loginButton.layer.cornerRadius = 10
         
         NotificationCenter.default.addObserver(
@@ -59,10 +61,9 @@ final class AuthViewController: UIViewController {
         guard loginTF.text == login, passwordTF.text == password else {
             showAlert(
                 title: "Invalid login or password",
-                message: "Please, enter correct login or password"
-            ) { _ in
-                self.passwordTF.text = ""
-            }
+                message: "Please, enter correct login or password",
+                textField: passwordTF
+            )
             return
         }
         
@@ -101,11 +102,12 @@ final class AuthViewController: UIViewController {
 // MARK: Extension
 
 extension AuthViewController {
-    
-    private func showAlert(title: String?, message: String, closure: ((UIAlertAction) -> Void)? = nil) {
+    private func showAlert(title: String?, message: String, textField: UITextField? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "ok", style: .default, handler: closure)
+        let okAction = UIAlertAction(title: "ok", style: .default) { _ in
+            textField?.text = ""
+        }
         
         alert.addAction(okAction)
         present(alert, animated: true)
