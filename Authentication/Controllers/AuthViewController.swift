@@ -14,13 +14,12 @@ final class AuthViewController: UIViewController {
     @IBOutlet var loginTF: UITextField!
     @IBOutlet var passwordTF: UITextField!
     
-    
     @IBOutlet var loginButton: UIButton!
     
-    let login = "Jinx"
-    let password = "123"
+    private let login = "Jinx"
+    private let password = "123"
     
-    // MARK: Override Fanction
+// MARK: Override Functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,14 +47,40 @@ final class AuthViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let yourPage = segue.destination as? PageViewController else {
+        guard let welcomeVC = segue.destination as? WelcomeViewController else {
             return
         }
-        guard let loginText = loginTF.text, !loginText.isEmpty else { return }
-        yourPage.nameLogin = loginText
+        welcomeVC.nameLogin = login
     }
     
-   // MARK: Private Functions
+// MARK: IBActions
+    
+    @IBAction func loginButtonTapped() {
+        guard loginTF.text == login, passwordTF.text == password else {
+            showAlert(
+                title: "Invalid login or password",
+                message: "Please, enter correct login or password"
+            ) { _ in
+                self.passwordTF.text = ""
+            }
+            return
+        }
+        
+        performSegue(withIdentifier: "openWelcomeVC", sender: nil)
+    }
+    
+    @IBAction func forgotRegister(_ sender: UIButton) {
+        sender.tag == 0
+        ? showAlert(title: nil, message: "your login is \(login) 🙂")
+        : showAlert(title: nil, message: "your password is \(password) 🙂")
+    }
+    
+    @IBAction func unwind(for segue: UIStoryboardSegue) {
+        loginTF.text = ""
+        passwordTF.text = ""
+    }
+    
+// MARK: Private Functions
     
     @objc private func keyboardWillShow(notifaction: NSNotification) {
         guard let keyboardFrame = notifaction.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
@@ -63,39 +88,13 @@ final class AuthViewController: UIViewController {
         let keyboardHeight = keyboardFrame.cgRectValue.height
         
         guard keyboardHeight > mainStackView.frame.origin.y else  { return }
-        let bottomSpace = self.view.frame.height - (mainStackView.frame.origin.y + mainStackView.frame.height)
-        self.view.frame.origin.y -= keyboardHeight - bottomSpace + 20
+        let minus = (mainStackView.frame.origin.y + mainStackView.frame.height)
+        let bottomSpace = view.frame.height - minus
+        view.frame.origin.y -= keyboardHeight - bottomSpace + 20
     }
     
     @objc private func keyboardWillHide() {
-        self.view.frame.origin.y = 0
-    }
-    
-    // MARK: IBActions
-    
-    @IBAction func loginButtonTapped() {
-        guard loginTF.text != login || passwordTF.text != password else { return }
-        showAlert(
-            title: "Invalid login or password",
-            message: "Please, enter correct login or password"
-        ) { _ in
-            self.passwordTF.text = ""
-        }
-        
-    }
-    
-    @IBAction func userButtonTapped() {
-        showAlert(title: nil, message: "your login is \(login) 🙂")
-    }
-    
-    @IBAction func passwordButtonTapped() {
-        showAlert(title: nil, message: "your password is \(password) 🙂")
-    }
-    
-    @IBAction func unwind(for segue: UIStoryboardSegue) {
-        guard segue.source is PageViewController else { return }
-        loginTF.text = ""
-        passwordTF.text = ""
+        view.frame.origin.y = 0
     }
 }
 

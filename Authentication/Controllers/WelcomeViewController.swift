@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PageViewController: UIViewController {
+final class WelcomeViewController: UIViewController {
     
     @IBOutlet var nameLabel: UILabel!
     
