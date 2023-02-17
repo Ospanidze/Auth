@@ -9,23 +9,26 @@ import UIKit
 
 final class AuthViewController: UIViewController {
     
+// MARK: IBOutlets
+    
     @IBOutlet var mainStackView: UIStackView!
     
     @IBOutlet var loginTF: UITextField!
     @IBOutlet var passwordTF: UITextField!
     
     @IBOutlet var loginButton: UIButton!
+
+// MARK: Pravte Properties
     
-    private let login = "Jinx"
-    private let password = "123"
+    private let user = User.getUser()
     
 // MARK: Override Functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginTF.text = login
-        passwordTF.text = password
+        loginTF.text = user.auth.login
+        passwordTF.text = user.auth.password
         loginButton.layer.cornerRadius = 10
         
         NotificationCenter.default.addObserver(
@@ -49,16 +52,24 @@ final class AuthViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let welcomeVC = segue.destination as? WelcomeViewController else {
-            return
+        guard let tabBarVC = segue.destination as? UITabBarController else { return }
+        
+        guard let viewControllers = tabBarVC.viewControllers else { return }
+        
+        viewControllers.forEach { vc in
+            if let welcomeVC = vc as? WelcomeViewController {
+                welcomeVC.nameLogin = user.person
+            } else if let navigationVC = vc as? UINavigationController {
+                guard let personVC = navigationVC.topViewController as? PersonViewController else { return }
+                personVC.person = user.person
+            }
         }
-        welcomeVC.nameLogin = login
     }
     
 // MARK: IBActions
     
     @IBAction func loginButtonTapped() {
-        guard loginTF.text == login, passwordTF.text == password else {
+        guard loginTF.text == user.auth.login, passwordTF.text == user.auth.password else {
             showAlert(
                 title: "Invalid login or password",
                 message: "Please, enter correct login or password",
@@ -72,8 +83,8 @@ final class AuthViewController: UIViewController {
     
     @IBAction func forgotRegister(_ sender: UIButton) {
         sender.tag == 0
-        ? showAlert(title: nil, message: "your login is \(login) 🙂")
-        : showAlert(title: nil, message: "your password is \(password) 🙂")
+        ? showAlert(title: nil, message: "your login is \(user.auth.login) 🙂")
+        : showAlert(title: nil, message: "your password is \(user.auth.password) 🙂")
     }
     
     @IBAction func unwind(for segue: UIStoryboardSegue) {
@@ -81,7 +92,7 @@ final class AuthViewController: UIViewController {
         passwordTF.text = ""
     }
     
-// MARK: Private Functions
+// MARK: Private Methods
     
     @objc private func keyboardWillShow(notifaction: NSNotification) {
         guard let keyboardFrame = notifaction.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
