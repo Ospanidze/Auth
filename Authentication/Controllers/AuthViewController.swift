@@ -22,7 +22,7 @@ final class AuthViewController: UIViewController {
     
     private let user = User.getUser()
     
-// MARK: Override Functions
+// MARK: Override Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
